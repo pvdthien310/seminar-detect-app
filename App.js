@@ -27,7 +27,7 @@ export default function ImagePickerExample() {
       temp.append("image", data.base64);
       setBase64Data(data.base64);
 
-      axios.post("http://192.168.1.50:5000/detectData", temp).then((res) => {
+      axios.post("http://192.168.0.103:5000/detectData", temp).then((res) => {
         setText(res.data.result);
       });
     });
