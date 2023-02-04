@@ -8,29 +8,6 @@ export default function ImagePickerExample() {
   const [text, setText] = useState("");
   const [base64_data, setBase64Data] = useState("");
 
-  const askForPermissions = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    if (status !== "granted") {
-      console.log("Camera roll permission not granted");
-      return false;
-    }
-    setText("");
-    setBase64Data("");
-
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: "Images",
-      base64: true,
-    }).then((data) => {
-      const temp = new FormData();
-      temp.append("image", data.base64);
-      setBase64Data(data.base64);
-
-      axios.post("http://192.168.0.103:5000/detectData", temp).then((res) => {
-        setText(res.data.result);
-      });
-    });
-  };
-
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     setText("");
@@ -89,6 +66,7 @@ export default function ImagePickerExample() {
     >
       <Text style={styles.titleText}>This is VietOCR test</Text>
       <Text style={styles.subtitleText}>Let's start by these two options!</Text>
+      <Text style={{ padding: 5 }}>{text}</Text>
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.button} onPress={pickImage}>
           <Text style={{ color: "white" }}>Take Photo</Text>
@@ -107,7 +85,6 @@ export default function ImagePickerExample() {
           }}
         >
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-          <Text>{text}</Text>
         </View>
       )}
     </View>
