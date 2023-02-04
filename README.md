@@ -1,6 +1,5 @@
 
 # VietOCR Demonstration for seminar (Vietnamese detection)
-<br />
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -8,7 +7,7 @@
   <br />
   The goal of choosing the Transformer architecture for the Optical Character Recognition (OCR) problem is to improve the performance and accuracy of the print recognition system (in this seminar). The Transformer architecture is considered one of the best neural network architectures available today in terms of performance and accuracy. It can handle different dataset lengths flexibly and efficiently, and can handle both images and text well.Choosing the Transformer architecture for the OCR problem will result in more uniform and accurate print recognition, and provide scalability to support new features or other complex problems in the future. . We believe that choosing Transformer architecture for OCR problem will help us achieve our goal of learning new tools and technologies in the field of NLP that can improve system performance and accuracy. print recognition.
   
-- Server repo: https://github.com/pvdthien310/ComeBuyServer
+- Server repo: https://github.com/pvdthien310/seminar-detect-server
 
 ### Main Features
  - Text Detection
