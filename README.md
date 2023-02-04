@@ -1,7 +1,4 @@
-# seminar-detect-app
-<div id="top"></div>
 
-<!-- PROJECT LOGO -->
 # VietOCR Demonstration for seminar (Vietnamese detection)
 <br />
 
