@@ -21,7 +21,7 @@
 
 ### Installation
 
-1. Clone the [client-side](https://github.com/pvdthien310/ComeBuyClient) and [server-side](https://github.com/pvdthien310/ComeBuyServer)
+1. Clone the [client-side](https://github.com/pvdthien310/seminar-detect-app.git) and [server-side](https://github.com/pvdthien310/seminar-detect-server)
 2. Go to both project directories and run this command:
 ``` shel
   npm i 
