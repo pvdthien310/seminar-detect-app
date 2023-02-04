@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Image, View, Text, StyleSheet } from "react-native";
+import { URL_Detection } from "./constant";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 
@@ -24,7 +25,7 @@ export default function ImagePickerExample() {
         setBase64Data(data.base64);
 
         axios
-          .post("http://192.168.0.103:5000/detectData", temp)
+          .post(URL_Detection, temp)
           .then((res) => {
             setText(res.data.result);
           })
@@ -48,7 +49,7 @@ export default function ImagePickerExample() {
         temp.append("image", data.base64);
         setBase64Data(data.base64);
 
-        axios.post("http://192.168.0.103:5000/detectData", temp).then((res) => {
+        axios.post(URL_Detection, temp).then((res) => {
           setText(res.data.result);
         });
       });
