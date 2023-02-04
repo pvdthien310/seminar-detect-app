@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, Image, View, Text, StyleSheet } from "react-native";
+import {
+  TouchableOpacity,
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 import { URL_Detection } from "./constant";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
@@ -8,6 +16,7 @@ export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
   const [text, setText] = useState("");
   const [base64_data, setBase64Data] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -23,13 +32,17 @@ export default function ImagePickerExample() {
         const temp = new FormData();
         temp.append("image", data.base64);
         setBase64Data(data.base64);
-
+        setLoading(true);
         axios
           .post(URL_Detection, temp)
           .then((res) => {
+            setLoading(false);
             setText(res.data.result);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            setLoading(false);
+            console.log(err);
+          });
       });
     }
   };
@@ -48,10 +61,17 @@ export default function ImagePickerExample() {
         const temp = new FormData();
         temp.append("image", data.base64);
         setBase64Data(data.base64);
-
-        axios.post(URL_Detection, temp).then((res) => {
-          setText(res.data.result);
-        });
+        setLoading(true);
+        axios
+          .post(URL_Detection, temp)
+          .then((res) => {
+            setLoading(false);
+            setText(res.data.result);
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err);
+          });
       });
     }
   };
@@ -65,18 +85,7 @@ export default function ImagePickerExample() {
         backgroundColor: "#F5FCFF",
       }}
     >
-      <Text style={styles.titleText}>This is VietOCR test</Text>
-      <Text style={styles.subtitleText}>Let's start by these two options!</Text>
-      <Text style={{ padding: 5 }}>{text}</Text>
-      <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.button} onPress={pickImage}>
-          <Text style={{ color: "white" }}>Take Photo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={pickFromCameraRoll}>
-          <Text style={{ color: "white" }}>Pick an image from camera roll</Text>
-        </TouchableOpacity>
-      </View>
-      {image && (
+      {!loading ? (
         <View
           style={{
             flex: 1,
@@ -85,7 +94,63 @@ export default function ImagePickerExample() {
             backgroundColor: "#F5FCFF",
           }}
         >
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <Text style={styles.titleText}>This is VietOCR test</Text>
+          <Text style={styles.subtitleText}>
+            Let's start by these two options!
+          </Text>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity style={styles.button} onPress={pickImage}>
+              <Text style={{ color: "white" }}>Take Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={pickFromCameraRoll}
+            >
+              <Text style={{ color: "white" }}>
+                Pick an image from camera roll
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {text !== "" ? (
+            <View>
+              <Text
+                style={{
+                  margin: 10,
+                  textDecorationLine: "underline",
+                  fontWeight: "bold",
+                }}
+              >
+                Result:
+              </Text>
+              <TextInput
+                multiline={true}
+                numberOfLines={20}
+                style={styles.input}
+                onChangeText={setText}
+                value={text}
+              />
+              <TouchableOpacity
+                onPress={() => setText("")}
+                style={styles.button}
+              >
+                <Text style={{ color: "white", textAlign: "center" }}>
+                  Reset
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
+        </View>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#F5FCFF",
+          }}
+        >
+          <ActivityIndicator size="large" />
+          <Text style={{ marginTop: 3 }}>Waiting for processing...</Text>
         </View>
       )}
     </View>
@@ -113,6 +178,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     backgroundColor: "#0D0D0D",
+    padding: 10,
+  },
+  input: {
+    minHeight: 40,
+    margin: 5,
+    borderWidth: 1,
+    padding: 5,
+    height: "auto",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     padding: 10,
   },
 });
